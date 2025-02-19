@@ -28,70 +28,32 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             category TEXT NOT NULL,
-            price REAL NOT NULL,
             stock_quantity INTEGER NOT NULL DEFAULT 0,
             description TEXT NOT NULL,
-            image TEXT NOT NULL,
-            supplier_id INTEGER NOT NULL,
-            manufacture_date TIMESTAMP NOT NULL,
-            expiry_date TIMESTAMP NOT NULL,
-            FOREIGN KEY (supplier_id) REFERENCES Suppliers(id)
+            supplier_name TEXT NOT NULL,
+            created_by TEXT,
+            edited_by TEXT
         )
         """
     )
     
     cursor.execute(
         """
-        CREATE TABLE IF NOT EXISTS Suppliers (
+        CREATE TABLE IF NOT EXISTS Categories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            contact_person TEXT NOT NULL,
-            phone TEXT UNIQUE NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            address TEXT NOT NULL,
-            item_supplied TEXT NOT NULL
+            created_by TEXT,
+            edited_by TEXT
         )
         """
     )
-    
+
     cursor.execute(
         """
-        CREATE TABLE IF NOT EXISTS Customers (
+        CREATE TABLE IF NOT EXISTS Department (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            phone TEXT UNIQUE NOT NULL,
-            address TEXT NOT NULL
-        )
-        """
-    )
-    
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS Orders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            customer_id INTEGER NOT NULL,
-            item_id INTEGER NOT NULL,
-            quantity INTEGER NOT NULL,
-            order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            status TEXT NOT NULL CHECK (status IN ('Pending', 'Completed', 'Cancelled')),
-            FOREIGN KEY (customer_id) REFERENCES Customers(id),
-            FOREIGN KEY (item_id) REFERENCES Items(id)
-        )
-        """
-    )
-    
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS Procurements (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            item_id INTEGER NOT NULL,
-            supplier_id INTEGER NOT NULL,
-            quantity INTEGER NOT NULL,
-            procurement_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            status TEXT NOT NULL CHECK (status IN ('Ordered', 'Received')),
-            FOREIGN KEY (item_id) REFERENCES Items(id),
-            FOREIGN KEY (supplier_id) REFERENCES Suppliers(id)
+            description TEXT
         )
         """
     )
@@ -101,6 +63,7 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS Logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
+            type TEXT CHECK(type IN ('Error', 'Success')),
             action TEXT NOT NULL,
             date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES Users(id)
