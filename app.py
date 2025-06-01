@@ -8,6 +8,7 @@ from routes.staff import staff_bp
 from routes.items import items_bp
 from routes.categories import categories_bp
 from routes.department import department_bp
+from routes.dashboard import dashboard_bp
 
 
 def create_app():
@@ -25,10 +26,11 @@ def create_app():
 
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix=f'{url}/auth')
-    app.register_blueprint(staff_bp, url_prefix=f'{url}/staff')
+    app.register_blueprint(staff_bp, url_prefix=f'{url}/staffs')
     app.register_blueprint(items_bp, url_prefix=f'{url}/items')
     app.register_blueprint(categories_bp, url_prefix=f'{url}/categories')
     app.register_blueprint(department_bp, url_prefix=f'{url}/departments')
+    app.register_blueprint(dashboard_bp, url_prefix=f'{url}/dashboard')
     
     return app
 

@@ -15,9 +15,12 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             role TEXT NOT NULL CHECK (role IN ('Super Admin', 'Admin', 'Staff', 'Customer')),
+            department NOT NULL,
             email TEXT UNIQUE NOT NULL,
             phone TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            created_by TEXT,
+            edited_by TEXT
         )
         """
     )
@@ -29,8 +32,10 @@ def create_tables():
             name TEXT NOT NULL,
             category TEXT NOT NULL,
             stock_quantity INTEGER NOT NULL DEFAULT 0,
+            department TEXT NOT NULL,
             description TEXT NOT NULL,
             supplier_name TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             created_by TEXT,
             edited_by TEXT
         )
@@ -70,6 +75,7 @@ def create_tables():
         )
         """
     )
+
     
     conn.commit()
     conn.close()
